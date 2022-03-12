@@ -1,2 +1,2 @@
 # R_geoanalysis
-Programming tools for geoprocessing 
+Programming tools for modeling potential distributions of species and geoprocessing 

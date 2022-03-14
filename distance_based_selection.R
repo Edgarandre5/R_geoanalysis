@@ -1,4 +1,3 @@
-set.seed(1111)
 setwd("/home/")
 
 library(raster)

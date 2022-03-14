@@ -1,20 +1,14 @@
 set.seed(1111)
-setwd("/home/edgarandres/modelos/especies_2/")
+setwd("/home/")
 
-library(rgdal)
 library(raster)
-library(maptools) 
-library(rgeos)
 library(data.table)
-library(parallel)
-library(filesstrings)
-resultado <- setNames(data.table(matrix(data=character(),nrow = 10000, ncol = 2)), c("scientificName","10km"))#, "0.20","0.41","0.62","0.83" "1km","2.5km","5km",
 
-archivos <- data.table(list.files(path="/home/edgarandres/modelos/especies_1/",pattern =".csv",full.name=F))
-a083 <- data.table(list.files(path="/home/edgarandres/modelos/especies_1/",pattern =".csv",full.name=T))
+species <- data.table(list.files(path="/home/especies/",pattern =".csv",full.name=F))
+species_path <- data.table(list.files(path="/home/especies/",pattern =".csv",full.name=T))
 
-for (j in 1:nrow(archivos)) {
-  a <- read.csv(paste0(a083[j]),header = T)
+for (j in 1:nrow(species)) {
+  a <- read.csv(paste0(species_path[j]),header = T)
   f <- nrow(a)-300
   for (k in 1:(f)) {  
     e <- data.table(matrix(data=double(),nrow = nrow(a)-1, ncol = nrow(a)))
@@ -35,5 +29,5 @@ for (j in 1:nrow(archivos)) {
       a <- a[-as.numeric(z[which.min(z[[1]]),2]),]
     }
   }
-  write.csv(a, paste0(archivos[j]),row.names = F)
+  write.csv(a, paste0(species[j]),row.names = F)
 }

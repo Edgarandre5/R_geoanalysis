@@ -22,7 +22,7 @@ rgnzn <- rgdal::readOGR(shapePath, shapeLayer)
 
 crs.wgs84 <- sp::CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
-bioclima<-stack(list.files(path="/home/present2.5/", pattern = "*.tif$", full.names=TRUE)) 
+bioclimate<-stack(list.files(path="/home/present2.5/", pattern = "*.tif$", full.names=TRUE)) 
 
 #--------------------------------- 2030
 covarDataFolder_ssp245_BCC_2030<-stack('/home/wc2.1_2.5m_bioc_BCC-CSM2-MR_ssp245_2021-2040.tif') 
@@ -81,11 +81,11 @@ occsData<-readr::read_csv(inputDataFile)
 sp::coordinates(occsData) <- c("x", "y")
 sp::proj4string(occsData) <- crs.wgs84
 
-covarData <- raster::extract(bioclima, occsData)
+covarData <- raster::extract(bioclimate, occsData)
 covarData <- cbind(occsData, covarData)
 
 completeDataCases <- covarData@data %>%
-  dplyr::select(.dots=names(bioclima)) %>%
+  dplyr::select(.dots=names(bioclimate)) %>%
   complete.cases 
 covarData <- covarData[completeDataCases, ]
 
@@ -102,7 +102,7 @@ correlacion <- corSelect(
 )
 select_var <- correlacion$selected.vars
 
-enviromentalVariables <- bioclima[[select_var]]
+enviromentalVariables <- bioclimate[[select_var]]
 
 selectedVariables <- enviromentalVariables[[select_var]]
 
@@ -205,12 +205,12 @@ env_ssp585_CAN_2070 <- raster::mask(env_ssp585_CAN_2070a ,  polyTransferencia)
 env_ssp585_CAN_2070<-stack(env_ssp585_CAN_2070)
 rm(m_covarDataFolder_ssp585_CAN_2070, env_ssp585_CAN_2070a)
 
-presencias<-data.frame(occsData)
-names(presencias)[names(presencias)=="outputFolder"] <- outputFolder
-presencias<-dplyr::select(presencias, c("x", "y",outputFolder))
-names(presencias)
+points<-data.frame(occsData)
+names(points)[names(points)=="outputFolder"] <- outputFolder
+points<-dplyr::select(points, c("x", "y",outputFolder))
+names(points)
 
-DataSpecies<-presencias
+DataSpecies<-points
 
 myRespName <- outputFolder
 myResp <- as.numeric(DataSpecies[,myRespName])
